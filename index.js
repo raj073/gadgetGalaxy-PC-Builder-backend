@@ -69,6 +69,15 @@ const run = async () => {
       console.log(cursor);
       res.send({ data: powerSupplyProducts });
     });
+
+    app.get("/storage-device", async (req, res) => {
+      const cursor = pcBuildersCollection.find({
+        category: "Storage Device",
+      });
+      const storageDeviceProducts = await cursor.toArray();
+      console.log(cursor);
+      res.send({ data: storageDeviceProducts });
+    });
   } finally {
   }
 };
