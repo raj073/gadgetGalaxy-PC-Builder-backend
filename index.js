@@ -61,11 +61,13 @@ const run = async () => {
       res.send({ data: ramProducts });
     });
 
-    app.get("/ram", async (req, res) => {
-      const cursor = pcBuildersCollection.find({ category: "RAM" });
-      const ramProducts = await cursor.toArray();
+    app.get("/power-supply", async (req, res) => {
+      const cursor = pcBuildersCollection.find({
+        category: "Power Supply Unit",
+      });
+      const powerSupplyProducts = await cursor.toArray();
       console.log(cursor);
-      res.send({ data: ramProducts });
+      res.send({ data: powerSupplyProducts });
     });
   } finally {
   }
