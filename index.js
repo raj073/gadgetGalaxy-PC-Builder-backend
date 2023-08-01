@@ -53,6 +53,20 @@ const run = async () => {
       console.log(cursor);
       res.send({ data: motherboardProducts });
     });
+
+    app.get("/ram", async (req, res) => {
+      const cursor = pcBuildersCollection.find({ category: "RAM" });
+      const ramProducts = await cursor.toArray();
+      console.log(cursor);
+      res.send({ data: ramProducts });
+    });
+
+    app.get("/ram", async (req, res) => {
+      const cursor = pcBuildersCollection.find({ category: "RAM" });
+      const ramProducts = await cursor.toArray();
+      console.log(cursor);
+      res.send({ data: ramProducts });
+    });
   } finally {
   }
 };
