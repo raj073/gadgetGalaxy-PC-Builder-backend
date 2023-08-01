@@ -78,6 +78,14 @@ const run = async () => {
       console.log(cursor);
       res.send({ data: storageDeviceProducts });
     });
+    app.get("/monitor", async (req, res) => {
+      const cursor = pcBuildersCollection.find({
+        category: "Monitor",
+      });
+      const monitorProducts = await cursor.toArray();
+      console.log(cursor);
+      res.send({ data: monitorProducts });
+    });
   } finally {
   }
 };
