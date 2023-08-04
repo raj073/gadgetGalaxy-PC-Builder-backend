@@ -26,6 +26,7 @@ const run = async () => {
     const db = client.db("gadgetGalaxy_pcbuilder");
 
     const pcBuildersCollection = db.collection("pcbuilder");
+    const addToBuildCollection = db.collection("addToBuild");
 
     app.get("/products", async (req, res) => {
       const cursor = pcBuildersCollection.find({});
@@ -94,6 +95,91 @@ const run = async () => {
       const othersProducts = await cursor.toArray();
       console.log(cursor);
       res.send({ data: othersProducts });
+    });
+
+    app.get("/pcbuilder", async (req, res) => {
+      const productId = req.query.productId;
+      const result = await pcBuildersCollection.findOne({
+        _id: new ObjectId(productId),
+      });
+
+      res.send(result);
+    });
+
+    app.post("/addtobuild", async (req, res) => {
+      const pcbuild = req.body;
+      console.log(pcbuild);
+
+      pcbuild.createdAt = new Date();
+
+      const query = { _id: pcbuild._id };
+
+      const updateOperation = {
+        $set: pcbuild,
+        $inc: { quantity: 1 },
+      };
+
+      const result = await addToBuildCollection.findOneAndUpdate(
+        query,
+        updateOperation,
+        { upsert: true }
+      );
+
+      res.send(result);
+    });
+
+    app.get("/addtobuildCPU", async (req, res) => {
+      const cursor = addToBuildCollection
+        .find({ category: "CPU/Processor" })
+        .sort({ createdAt: -1 })
+        .limit(1);
+      const addToBuildProducts = await cursor.toArray();
+      res.send({ data: addToBuildProducts });
+    });
+
+    app.get("/addtobuildMotherboard", async (req, res) => {
+      const cursor = addToBuildCollection
+        .find({ category: "Motherboard" })
+        .sort({ createdAt: -1 })
+        .limit(1);
+      const addToBuildProducts = await cursor.toArray();
+      res.send({ data: addToBuildProducts });
+    });
+
+    app.get("/addtobuildRam", async (req, res) => {
+      const cursor = addToBuildCollection
+        .find({ category: "RAM" })
+        .sort({ createdAt: -1 })
+        .limit(1);
+      const addToBuildProducts = await cursor.toArray();
+      res.send({ data: addToBuildProducts });
+    });
+
+    app.get("/addtobuildPower", async (req, res) => {
+      const cursor = addToBuildCollection
+        .find({ category: "Power Supply Unit" })
+        .sort({ createdAt: -1 })
+        .limit(1);
+      const addToBuildProducts = await cursor.toArray();
+      res.send({ data: addToBuildProducts });
+    });
+
+    app.get("/addtobuildStorageDevice", async (req, res) => {
+      const cursor = addToBuildCollection
+        .find({ category: "Storage Device" })
+        .sort({ createdAt: -1 })
+        .limit(1);
+      const addToBuildProducts = await cursor.toArray();
+      res.send({ data: addToBuildProducts });
+    });
+
+    app.get("/addtobuildMonitor", async (req, res) => {
+      const cursor = addToBuildCollection
+        .find({ category: "Monitor" })
+        .sort({ createdAt: -1 })
+        .limit(1);
+      const addToBuildProducts = await cursor.toArray();
+      res.send({ data: addToBuildProducts });
     });
   } finally {
   }
