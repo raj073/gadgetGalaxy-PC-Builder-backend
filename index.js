@@ -44,21 +44,18 @@ const run = async () => {
     app.get("/cpu-processor", async (req, res) => {
       const cursor = pcBuildersCollection.find({ category: "CPU/Processor" });
       const cpuProcessorProducts = await cursor.toArray();
-      console.log(cursor);
       res.send({ data: cpuProcessorProducts });
     });
 
     app.get("/motherboard", async (req, res) => {
       const cursor = pcBuildersCollection.find({ category: "Motherboard" });
       const motherboardProducts = await cursor.toArray();
-      console.log(cursor);
       res.send({ data: motherboardProducts });
     });
 
     app.get("/ram", async (req, res) => {
       const cursor = pcBuildersCollection.find({ category: "RAM" });
       const ramProducts = await cursor.toArray();
-      console.log(cursor);
       res.send({ data: ramProducts });
     });
 
@@ -67,7 +64,6 @@ const run = async () => {
         category: "Power Supply Unit",
       });
       const powerSupplyProducts = await cursor.toArray();
-      console.log(cursor);
       res.send({ data: powerSupplyProducts });
     });
 
@@ -76,7 +72,6 @@ const run = async () => {
         category: "Storage Device",
       });
       const storageDeviceProducts = await cursor.toArray();
-      console.log(cursor);
       res.send({ data: storageDeviceProducts });
     });
     app.get("/monitor", async (req, res) => {
@@ -84,7 +79,6 @@ const run = async () => {
         category: "Monitor",
       });
       const monitorProducts = await cursor.toArray();
-      console.log(cursor);
       res.send({ data: monitorProducts });
     });
 
@@ -93,7 +87,6 @@ const run = async () => {
         category: "Others",
       });
       const othersProducts = await cursor.toArray();
-      console.log(cursor);
       res.send({ data: othersProducts });
     });
 
@@ -108,10 +101,8 @@ const run = async () => {
 
     app.post("/addtobuild", async (req, res) => {
       const pcbuild = req.body;
-      console.log(pcbuild);
 
       pcbuild.createdAt = new Date();
-
       const query = { _id: pcbuild._id };
 
       const updateOperation = {
@@ -180,6 +171,15 @@ const run = async () => {
         .limit(1);
       const addToBuildProducts = await cursor.toArray();
       res.send({ data: addToBuildProducts });
+    });
+
+    app.delete("/addtobuild/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const result = await addToBuildCollection.deleteOne({
+        _id: id,
+      });
+      res.send(result);
     });
   } finally {
   }
